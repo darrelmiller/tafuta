@@ -1,0 +1,80 @@
+openapi: 3.0.0
+info:
+  title: Tafuta API
+  version: 0.0.1
+tags: []
+paths:
+  /ApiDescriptions:
+    post:
+      operationId: AddApiDescription
+      description: Adds or updates operations from an API Description in the search index
+      parameters:
+        - name: apiDescriptionUrl
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+  /ApiOperations/search:
+    get:
+      operationId: Search
+      description: Searches the index for API Entries matching the query
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiOperation'
+components:
+  schemas:
+    ApiOperation:
+      type: object
+      required:
+        - apiDescriptionUrl
+        - uriTemplate
+        - httpMethod
+      properties:
+        apiDescriptionUrl:
+          type: string
+        parameterDescriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParameterDescription'
+        requestBodyDescription:
+          type: string
+        summary:
+          type: string
+        description:
+          type: string
+        uriTemplate:
+          type: string
+        httpMethod:
+          type: string
+    ParameterDescription:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+servers:
+  - url: https://example.com
+    description: local server endpoint
+    variables: {}

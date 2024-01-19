@@ -1,0 +1,26 @@
+@api_HostAddress = http://localhost:5165
+
+
+### Add Twilio API Description
+POST {{api_HostAddress}}/ApiDescriptions?apiDescriptionUrl=https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_api_v2010.json
+
+### Add Giphy API Description
+POST {{api_HostAddress}}/ApiDescriptions?apiDescriptionUrl=https://raw.githubusercontent.com/APIs-guru/openapi-directory/main/APIs/giphy.com/1.0/openapi.yaml
+
+### Search for a gif by keyword
+GET {{api_HostAddress}}/ApiOperations/search?query=find%20an%20image%20based%20on%20a%20keyword 
+
+
+### find a popular gif
+GET {{api_HostAddress}}/ApiOperations/search?query=find%20a%20popular%20gif
+
+### Search for a twilio account
+GET {{api_HostAddress}}/ApiOperations/search?query=get%20a%20twilio%20account
+
+### Create a twilio appplication
+GET {{api_HostAddress}}/ApiOperations/search?query=create%20a%20twilio%20application
+
+### Find an API that allows me to export Twilio jobs (doesn't work)
+GET {{api_HostAddress}}/ApiOperations/search?query=exports%20twilio%20jobs%20between%20two%20dates
+
+
