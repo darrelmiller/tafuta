@@ -29,11 +29,24 @@ public class ApiDescriptionService
         #pragma warning disable SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
         var azureOpenAIKey = Environment.GetEnvironmentVariable("AZURE_OPENAI_KEY");
-             _memoryStore = new MemoryBuilder()
-            .WithHttpClient(_httpClient) 
-            .WithAzureOpenAITextEmbeddingGeneration("tafuta","https://tafuta.openai.azure.com/",azureOpenAIKey)
-            .WithMemoryStore(new VolatileMemoryStore())
-            .Build();
+        if (string.IsNullOrEmpty(azureOpenAIKey)) {
+            throw new Exception("AZURE_OPENAI_KEY environment variable is not set");
+        }
+        var azureOpenAIDeploymentName = Environment.GetEnvironmentVariable("AZURE_OPENAI_DEPLOYMENTNAME");
+        if (string.IsNullOrEmpty(azureOpenAIDeploymentName)) {
+            throw new Exception("AZURE_OPENAI_DEPLOYMENTNAME environment variable is not set");
+        }
+        var azureOpenAIEndpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
+        if (string.IsNullOrEmpty(azureOpenAIEndpoint)) {
+            throw new Exception("AZURE_OPENAI_ENDPOINT environment variable is not set");
+        }
+        Console.WriteLine($"Using Azure OpenAI Endpoint {azureOpenAIEndpoint} and Deployment {azureOpenAIDeploymentName}");
+
+        _memoryStore = new MemoryBuilder()
+        .WithHttpClient(_httpClient) 
+        .WithAzureOpenAITextEmbeddingGeneration(azureOpenAIDeploymentName,azureOpenAIEndpoint,azureOpenAIKey)
+        .WithMemoryStore(new VolatileMemoryStore())
+        .Build();
 
         #pragma warning restore SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
         #pragma warning restore SKEXP0011 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
