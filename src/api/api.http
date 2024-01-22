@@ -1,5 +1,35 @@
 @api_HostAddress = http://localhost:5165
 
+POST {{api_HostAddress}}/ApiDescriptions?apiDescriptionUrl=https://developer.oxforddictionaries.com/swagger/spec/public_doc_guest.json
+
+### Add fantasyData API Description
+POST {{api_HostAddress}}/ApiDescriptions?apiDescriptionUrl=https://fantasydata.com/downloads/swagger/soccer-v3-stats.json
+
+### Get all College Basketball Teams stats
+POST {{api_HostAddress}}/ApiDescriptions?apiDescriptionUrl=https://fantasydata.com/downloads/swagger/cbb-v3-stats.json
+
+### Get Raptors stats
+GET {{api_HostAddress}}/ApiOperations/search?query=get%20raptors%20stats 
+
+### Did Man united win today?
+GET {{api_HostAddress}}/ApiOperations/search?query=did%20man%20united%20win%20today 
+
+### Get final result for Man united game today?
+GET {{api_HostAddress}}/ApiOperations/search?query=get%20final%20result%20for%20man%20united%20game%20today 
+
+### Translate "Hello World" to Klingon
+GET {{api_HostAddress}}/ApiOperations/search?query=translate%20hello%20world%20to%20klingon
+
+### Translate "Hello World" so that thrawn can understand
+GET {{api_HostAddress}}/ApiOperations/search?query=translate%20hello%20world%20so%20that%20thrawn%20can%20understand
+
+
+### Get API so I can talk to Chewbacka
+GET {{api_HostAddress}}/ApiOperations/search?query=get%20api%20so%20i%20can%20talk%20to%20chewbacka
+
+
+### Add Funtranslations API Description
+POST {{api_HostAddress}}/ApiDescriptions?apiDescriptionUrl=http://api.funtranslations.com/yaml/funtranslations.yaml
 
 ### Add Twilio API Description
 POST {{api_HostAddress}}/ApiDescriptions?apiDescriptionUrl=https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_api_v2010.json

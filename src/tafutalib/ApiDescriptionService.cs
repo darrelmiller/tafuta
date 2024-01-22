@@ -1,11 +1,11 @@
 ﻿
 using System.Net;
 using System.Reflection.Metadata;
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
 using Microsoft.OpenApi.Readers;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Microsoft.SemanticKernel.Connectors.Qdrant;
 using Microsoft.SemanticKernel.Memory;
 
 namespace TafutaLib;
@@ -27,6 +27,7 @@ public class ApiDescriptionService
         #pragma warning disable SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
         #pragma warning disable SKEXP0011 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
         #pragma warning disable SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+        #pragma warning disable SKEXP0026 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
         var azureOpenAIKey = Environment.GetEnvironmentVariable("AZURE_OPENAI_KEY");
         if (string.IsNullOrEmpty(azureOpenAIKey)) {
@@ -42,15 +43,22 @@ public class ApiDescriptionService
         }
         Console.WriteLine($"Using Azure OpenAI Endpoint {azureOpenAIEndpoint} and Deployment {azureOpenAIDeploymentName}");
 
+        var qdrantEndpoint = Environment.GetEnvironmentVariable("QDRANT_ENDPOINT");
+        if (string.IsNullOrEmpty(qdrantEndpoint)) {
+            throw new Exception("QDRANT_ENDPOINT environment variable is not set");
+        }
+
         _memoryStore = new MemoryBuilder()
         .WithHttpClient(_httpClient) 
         .WithAzureOpenAITextEmbeddingGeneration(azureOpenAIDeploymentName,azureOpenAIEndpoint,azureOpenAIKey)
-        .WithMemoryStore(new VolatileMemoryStore())
+        //.WithMemoryStore(new VolatileMemoryStore())
+        .WithMemoryStore(new QdrantMemoryStore(qdrantEndpoint,1536))
         .Build();
 
         #pragma warning restore SKEXP0003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
         #pragma warning restore SKEXP0011 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
         #pragma warning restore SKEXP0052 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+        #pragma warning restore SKEXP0026 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
     }
 
 
@@ -86,7 +94,7 @@ public class ApiDescriptionService
                     Summary = operation.Value.Summary,
                     Description = operation.Value.Description,
                     RequestBodyDescription = operation.Value.RequestBody?.Description,
-                    ParameterDescriptions = operation.Value.Parameters.Select(p => new ParameterDescription
+                    ParameterDescriptions = operation.Value.Parameters.Select(p => new ApiParameterDescription
                     {
                         Name = p.Name,
                         Description = p.Description,
@@ -113,34 +121,3 @@ public class ApiDescriptionService
         return apiOperations.ToArray();        
     }
 }
-
-
-
-public class ApiOperation {
-    public string? ApiDescriptionUrl { get; set; }
-    public ParameterDescription[]? ParameterDescriptions { get; set; }
-    public string? RequestBodyDescription { get; set; }
-    public string? Summary { get; set; }
-    public string? Description { get; set; }
-    public string? UriTemplate { get; set; }
-    public string? HttpMethod { get; set; }
-
-    internal static ApiOperation? Parse(string text)
-    {
-        return JsonSerializer.Deserialize<ApiOperation>(text);    
-    }
-
-    public string OperationKey => ApiDescriptionUrl + "#" + UriTemplate + "#" + HttpMethod;
-
-    public string ToJson() {
-        var text = JsonSerializer.Serialize(this);
-        return text;
-    }
-}
-
-
-public class ParameterDescription {
-    public string? Name { get; set; }
-    public string? Description { get; set; }
-    public string? Type { get; set; }
-} 
