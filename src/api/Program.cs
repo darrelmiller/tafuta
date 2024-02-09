@@ -5,14 +5,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<ApiDescriptionService>();
 
 var app = builder.Build();
+var defaultCollection = "apiindex2";
 
 app.UseHttpsRedirection();
 
 // See ../../apidesc/main.tsp for API Description
 
-app.MapPost("/apiDescriptions", async (ApiDescriptionService apiDescriptionService, [FromQuery] string apiDescriptionUrl) =>
+app.MapPost("/apiDescriptions", async (ApiDescriptionService apiDescriptionService, 
+                                        [FromQuery] string apiDescriptionUrl,
+                                        [FromQuery] string? collection = null) =>
 {
-    var created = await apiDescriptionService.AddApiDescription(apiDescriptionUrl);
+    var created = await apiDescriptionService.AddApiDescription(apiDescriptionUrl,collection ?? defaultCollection);
 
     if (created)
     {
@@ -23,9 +26,11 @@ app.MapPost("/apiDescriptions", async (ApiDescriptionService apiDescriptionServi
 });
 
 
-app.MapGet("/apiOperations/search", (ApiDescriptionService apiDescriptionService, [FromQuery] string query) =>
+app.MapGet("/apiOperations/search", (ApiDescriptionService apiDescriptionService, 
+                                        [FromQuery] string query,
+                                        [FromQuery] string? collection = null) =>
 {
-        return apiDescriptionService.Search(query);
+        return apiDescriptionService.Search(collection ?? defaultCollection,query);
 });
 
 app.Run();

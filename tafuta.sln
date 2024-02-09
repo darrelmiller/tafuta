@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tafutalib", "src\tafutalib\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api", "src\api\api.csproj", "{3CFEF00D-612D-4C9A-8622-FCAAC241FD4E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{F35D56CF-29FE-489E-98CE-416605308555}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "validate", "tools\validate\validate.csproj", "{0DA76BC2-2559-4861-AB37-1E6318A98695}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +30,14 @@ Global
 		{3CFEF00D-612D-4C9A-8622-FCAAC241FD4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CFEF00D-612D-4C9A-8622-FCAAC241FD4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CFEF00D-612D-4C9A-8622-FCAAC241FD4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DA76BC2-2559-4861-AB37-1E6318A98695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DA76BC2-2559-4861-AB37-1E6318A98695}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DA76BC2-2559-4861-AB37-1E6318A98695}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DA76BC2-2559-4861-AB37-1E6318A98695}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D410AD99-A90A-4593-83A9-1BA8D4ACE438} = {CA4DE680-8FA2-4789-9E46-77327EED925D}
 		{3CFEF00D-612D-4C9A-8622-FCAAC241FD4E} = {CA4DE680-8FA2-4789-9E46-77327EED925D}
+		{0DA76BC2-2559-4861-AB37-1E6318A98695} = {F35D56CF-29FE-489E-98CE-416605308555}
 	EndGlobalSection
 EndGlobal

@@ -11,11 +11,11 @@ namespace Tafuta;
 
 @doc("Adds or updates operations from an API Description in the search index")
 @route("/ApiDescriptions")
-@post op AddApiDescription(@query() apiDescriptionUrl: string) : OkResponse | CreatedResponse;
+@post op AddApiDescription(@query() apiDescriptionUrl: string, @query() collection:string) : OkResponse | CreatedResponse;
 
 @doc("Searches the index for API Entries matching the query")
 @route("/ApiOperations/search")
-@get op Search(@query() query: string) : ApiOperation[];
+@get op Search(@query() query: string, @query() collection:string) : ApiOperation[];
 
 // This model is specifically intended to be used for semantic indexing of API operations
 // It is not intended to be complete for the purpose of executing the API operations

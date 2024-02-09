@@ -1,12 +1,16 @@
 ﻿
 using System.Net;
 using System.Reflection.Metadata;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging;
 using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
+using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Connectors.Qdrant;
 using Microsoft.SemanticKernel.Memory;
+using Microsoft.VisualBasic;
 
 namespace TafutaLib;
 
@@ -63,7 +67,7 @@ public class ApiDescriptionService
 
 
 
-    public async Task<bool> AddApiDescription(string apiDescriptionUrl)
+    public async Task<bool> AddApiDescription(string collection, string apiDescriptionUrl)
     {
         // Dereference apiDescriptionUrl
         var response = await _httpClient.GetAsync(apiDescriptionUrl);
@@ -86,24 +90,17 @@ public class ApiDescriptionService
         {
             foreach (var operation in path.Value.Operations)
             {
-                var apiOperation = new ApiOperation
-                {
-                    ApiDescriptionUrl = apiDescriptionUrl,
-                    UriTemplate = path.Key,
-                    HttpMethod = operation.Key.ToString(),
-                    Summary = operation.Value.Summary,
-                    Description = operation.Value.Description,
-                    RequestBodyDescription = operation.Value.RequestBody?.Description,
-                    ParameterDescriptions = operation.Value.Parameters.Select(p => new ApiParameterDescription
-                    {
-                        Name = p.Name,
-                        Description = p.Description,
-                        Type = p.Schema.Type
-                    }).ToArray()
-                };
+                var apiOperation = ApiOperation.Create(apiDescriptionUrl, path, operation);
                 logger.LogInformation($"Adding {apiOperation.OperationKey}");
+                var text = apiOperation.CreateText();
+                logger.LogDebug(text);
                 // Store ApiOperation
-                await _memoryStore.SaveInformationAsync("apiindex",apiOperation.ToJson(),apiOperation.OperationKey, apiDescription.Info.Title);
+                await _memoryStore.SaveReferenceAsync(
+                        collection: collection,
+                        text: text,
+                        externalId: apiOperation.OperationKey,
+                        externalSourceName: apiDescription.Info.Title,
+                        additionalMetadata: JsonSerializer.Serialize(apiOperation));
             }
         }   
 
@@ -111,12 +108,16 @@ public class ApiDescriptionService
         return true; // if created
     }
 
-    public async Task<ApiOperation[]> Search(string query)
+
+    public async Task<ApiOperation[]> Search(string collection, string query, int limit = 5)
     {
-        var results =  _memoryStore.SearchAsync("apiindex",query);
+        var results =  _memoryStore.SearchAsync(collection,query, limit);
         var apiOperations = new List<ApiOperation>();
         await foreach (var result in results) {
-            apiOperations.Add(ApiOperation.Parse(result.Metadata.Text));
+            var op = ApiOperation.Parse(result.Metadata.AdditionalMetadata);
+            if ( op is not null) {
+                apiOperations.Add(op);
+            }
         }
         return apiOperations.ToArray();        
     }

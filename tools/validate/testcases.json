@@ -1,0 +1,35 @@
+[
+    {
+        "question": "Get final result for Man united game today?",
+        "answer": "https://fantasydata.com/downloads/swagger/soccer-v3-stats.json#/{format}/BoxScore/{gameid}#Get"
+    },
+    {
+        "question": "Translate \"Hello World\" to Klingon",
+        "answer": "http://api.funtranslations.com/yaml/funtranslations.yaml#/translate/klingon#Get"
+    },
+    {
+        "question": "Translate \"Hello World\" so that thrawn can understand",
+        "answer": "http://api.funtranslations.com/yaml/funtranslations.yaml#/translate/cheunh#Get"
+    },
+    {
+        "question": "Get API so I can talk to Chewbacka",
+        "answer": "http://api.funtranslations.com/yaml/funtranslations.yaml#/translate/cheunh#Get"
+    },
+    {
+        "question": "Find an image based on a keyword",
+        "answer": "https://raw.githubusercontent.com/APIs-guru/openapi-directory/main/APIs/giphy.com/1.0/openapi.yaml#/gifs/translate#Get"
+    },
+    {
+        "question": "Search for a twilio account",
+        "answer": ""
+    },
+    {
+        "question": "Create a twilio appplication",
+        "answer": ""
+    },
+    {
+        "question": "Find an API that allows me to export Twilio jobs",
+        "answer": ""
+    }
+
+]
