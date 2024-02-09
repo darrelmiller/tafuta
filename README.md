@@ -10,9 +10,9 @@ dotnet run --project .\src\api\api.csproj
 
 To index API descriptions the Azure OpenAI service is required. The following Environment variables must be set:
 
-AZURE_OPENAI_KEY
-AZURE_OPENAI_DEPLOYMENTNAME
-AZURE_OPENAI_ENDPOINT
+- AZURE_OPENAI_KEY
+- AZURE_OPENAI_DEPLOYMENTNAME
+- AZURE_OPENAI_ENDPOINT
 
 Currently the index is stored in volatile memory, so when the API process is stopped all the vectors are lost.
 
