@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Tafuta API Search</title>
+<style>
+/* Flex column layout, with the editor taking up all available screen space */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+
+}
+#output {
+    width: 80%;
+    height: 100px;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+button#validate {
+    display: block;
+    width: 200px;
+    height: 40px;
+    margin: 20px auto;
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+button#validate:hover {
+    background-color: #45a049;
+}
+#editor {
+    flex-grow: 1;
+    border: solid 1px gray;
+    overflow: hidden;
+}
+#button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>
+</head>
+<body>
+<h1 id="schema">Tafuta API Directory</h1>
+
+<!-- <div id="editor"></div> -->
+<textarea id="editor" style="width: 60%; height: 20%; display: block;overflow: auto;"></textarea> 
+<div id="button-container"><button id="validate" width="100px">Search</button></div>
+<div id="output" style="width: 100%; height: 70%; display: block; background-color: bisque;"></div> 
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/loader.min.js"></script> -->
+<script>
+
+var validateApi = "/ApiOperations/search?query="
+
+
+document.getElementById('validate').addEventListener('click', function() {
+    var editor = document.getElementById('editor');
+
+    // Replace 'your-api-url' with the URL of the API you want to call
+    fetch(validateApi + editor.value, {
+        method: 'GET',
+    })
+    .then(response => response.text())
+    .then(data => {
+        var output = document.getElementById('output');
+        output.innerHTML = data
+    })
+    .catch((error) => {
+        console.log('Error:', error);
+    });
+});
+
+// require(["vs/editor/editor.main"], function () {
+//     // Create the editor with some sample JavaScript code
+//     var editor = monaco.editor.create(document.getElementById("editor"), {
+//         value: "",
+//         language: "json"
+//     });
+
+//     // Resize the editor when the window size changes
+//     const editorElement = document.getElementById("editor");
+//     window.addEventListener("resize", () => editor.layout({
+//         width: editorElement.offsetWidth,
+//         height: editorElement.offsetHeight
+//     }));
+// });
+</script>
+</body>
+</html>

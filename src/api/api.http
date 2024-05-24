@@ -1,6 +1,6 @@
 @api_HostAddress = http://localhost:5165
 
-POST {{api_HostAddress}}/ApiDescriptions?apiDescriptionUrl=https://developer.oxforddictionaries.com/swagger/spec/public_doc_guest.json
+POST {{api_HostAddress}}/ApiDescriptions?apiDescriptionUrl=https://raw.githubusercontent.com/microsoftgraph/msgraph-metadata/master/openapi/v1.0/openapi.yaml
 
 ### Add fantasyData API Description
 POST {{api_HostAddress}}/ApiDescriptions?apiDescriptionUrl=https://fantasydata.com/downloads/swagger/soccer-v3-stats.json
@@ -53,4 +53,14 @@ GET {{api_HostAddress}}/ApiOperations/search?query=create%20a%20twilio%20applica
 ### Find an API that allows me to export Twilio jobs (doesn't work)
 GET {{api_HostAddress}}/ApiOperations/search?query=exports%20twilio%20jobs%20between%20two%20dates
 
+
+### Find an API that can store a secret
+GET {{api_HostAddress}}/ApiOperations/search?query=store%20a%20secret
+
+### Find an API that create an embedding
+GET {{api_HostAddress}}/ApiOperations/search?query=create%20an%20embedding
+
+
+### I want to eat thai
+GET {{api_HostAddress}}/ApiOperations/search?query=I%20want%20to%20eat%20thai
 

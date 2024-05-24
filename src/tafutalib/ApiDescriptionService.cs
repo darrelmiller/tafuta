@@ -12,6 +12,7 @@ namespace TafutaLib;
 
 public class ApiDescriptionService
 {
+    private const string _Collection = "apiindex3";
     private readonly ILogger<ApiDescriptionService> logger;
     HttpClient _httpClient;
 
@@ -75,10 +76,10 @@ public class ApiDescriptionService
         var openApiStream = await response.Content.ReadAsStreamAsync();
         var reader= new OpenApiStreamReader();
         var result = await reader.ReadAsync(openApiStream);
-        if (result.OpenApiDiagnostic.Errors.Count > 0)
-        {
-            throw new Exception("Could not parse {apiDescriptionUrl} due to {result.OpenApiDiagnostic.Errors}");
-        }
+        // if (result.OpenApiDiagnostic.Errors.Count > 0)
+        // {
+        //     throw new Exception("Could not parse {apiDescriptionUrl} due to {result.OpenApiDiagnostic.Errors}");
+        // }
         
         var apiDescription = result.OpenApiDocument;
         // Loop through paths and operations and create ApiOperation object for each
@@ -103,7 +104,7 @@ public class ApiDescriptionService
                 };
                 logger.LogInformation($"Adding {apiOperation.OperationKey}");
                 // Store ApiOperation
-                await _memoryStore.SaveInformationAsync("apiindex",apiOperation.ToJson(),apiOperation.OperationKey, apiDescription.Info.Title);
+                await _memoryStore.SaveInformationAsync(_Collection, apiOperation.ToJson(),apiOperation.OperationKey, apiDescription.Info.Title);
             }
         }   
 
@@ -113,7 +114,7 @@ public class ApiDescriptionService
 
     public async Task<ApiOperation[]> Search(string query)
     {
-        var results =  _memoryStore.SearchAsync("apiindex",query);
+        var results =  _memoryStore.SearchAsync(_Collection, query,limit:10);
         var apiOperations = new List<ApiOperation>();
         await foreach (var result in results) {
             apiOperations.Add(ApiOperation.Parse(result.Metadata.Text));

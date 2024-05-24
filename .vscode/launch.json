@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "C#: api... [Default Configuration]",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/api/bin/Debug/net8.0/api.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/api",
+            "envFile": "${input:dotEnvFilePath}"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "dotEnvFilePath",
+            "type": "command",
+            "command": "azure-dev.commands.getDotEnvFilePath"
+        }
+    ]
+}
